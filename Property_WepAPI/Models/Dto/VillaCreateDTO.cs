@@ -2,9 +2,8 @@
 
 namespace Property_WepAPI.Models.Dto
 {
-    public class VillaDTO
+    public class VillaCreateDTO
     {
-        public int Id { get; set; }
         [Required]
         [MaxLength(20)]
         public string Name { get; set; }
@@ -16,7 +15,7 @@ namespace Property_WepAPI.Models.Dto
         public string ImageUrl { get; set; }
         public string Amenity { get; set; }
 
-       
+        
 
     }
 }

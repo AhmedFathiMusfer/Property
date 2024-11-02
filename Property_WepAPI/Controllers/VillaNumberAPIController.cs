@@ -15,38 +15,40 @@ using System.Net;
 
 namespace Property_WepAPI.Controllers
 {
-    [Route("api/VillaAPI")]
+    [Route("api/VillaNumberAPI")]
     [ApiController]
-    public class VillaAPIController : ControllerBase
+    public class VillaNumberAPIController : ControllerBase
     {
+        private readonly IVillaNumberRepository _dbvillaNumber;
         private readonly IVillaRepository _dbVilla;
         private readonly IMapper _mapping;
         private readonly ILogging _logger;
- 
-        protected APIResponse _APIResponse;
 
+        protected  APIResponse _APIResponse;
+       
 
-        public VillaAPIController(ILogging logger, IVillaRepository dbVilla, IMapper mapping)
+       public  VillaNumberAPIController(ILogging logger, IVillaNumberRepository dbVillaNumber, IVillaRepository dbVilla, IMapper mapping)
         {
             _logger = logger;
-            _dbVilla = dbVilla;
+            _dbvillaNumber = dbVillaNumber;
             _mapping = mapping;
-            _APIResponse = new();
+            _dbVilla = dbVilla;
+            _APIResponse=new();
         }
 
-        [HttpGet]
+         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<APIResponse>> GetVills()
+        public async Task<ActionResult<APIResponse>> GetVillNumbers()
         {
             try
             {
-                _logger.log("Get all villas", "");
-                IEnumerable<Villa> villas = await _dbVilla.GetAllAsync();
+                _logger.log("Get all villaNumbers", "");
+                IEnumerable<VillaNumber> villaNumbers = await _dbvillaNumber.GetAllAsync();
                 _APIResponse.StatusCode = HttpStatusCode.OK;
-                _APIResponse.Result = _mapping.Map<List<VillaDTO>>(villas);
+                _APIResponse.Result = _mapping.Map<List<VillaNumberDTO>>(villaNumbers);
                 return Ok(_APIResponse);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 _APIResponse.IsSuccess = false;
                 _APIResponse.EroorMessage = new List<string>
@@ -55,34 +57,34 @@ namespace Property_WepAPI.Controllers
                 };
             }
             return _APIResponse;
-
+          
         }
-        [HttpGet("{id:int}", Name = "GetVilla")]
+        [HttpGet("{id:int}",Name ="GetVillaNumber")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<APIResponse>> GetVill(int id)
+        public async Task<ActionResult<APIResponse>> GetVillNumber(int id)
         {
             try
             {
                 if (id == 0)
                 {
-                    _logger.log("Get villa Error With Id " + id, "Error");
+                    _logger.log("Get villa Number Error With Id " + id, "Error");
                     _APIResponse.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(_APIResponse);
                 }
-                var villa = await _dbVilla.GetAsync(v => v.Id == id);
-                if (villa == null)
+                var villaNumber = await _dbvillaNumber.GetAsync(v => v.VillaNo== id);
+                if (villaNumber == null)
                 {
                     _APIResponse.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_APIResponse);
                 }
-                _logger.log("Get  vill ", "");
+                _logger.log("Get  vill Number ", "");
                 _APIResponse.StatusCode = HttpStatusCode.OK;
-                _APIResponse.Result = _mapping.Map<VillaDTO>(villa);
+                _APIResponse.Result = _mapping.Map<VillaNumberDTO>(villaNumber);
                 return Ok(_APIResponse);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 _APIResponse.IsSuccess = false;
                 _APIResponse.EroorMessage = new List<string>
@@ -91,21 +93,21 @@ namespace Property_WepAPI.Controllers
                 };
             }
             return _APIResponse;
-
-
-
+            
+            
+          
         }
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPost]
-        public async Task<ActionResult<APIResponse>> Add([FromBody] VillaCreateDTO villaDTO)
+        public async Task<ActionResult<APIResponse>> Add([FromBody]VillaNumberCreateDTO villaNumberDTO)
         {
             try
             {
-                if (await _dbVilla.GetAsync(v => v.Name.ToLower() == villaDTO.Name.ToLower()) != null)
+                if (await _dbvillaNumber.GetAsync(v => v.VillaNo== villaNumberDTO.VillaNo) != null)
                 {
-                    ModelState.AddModelError("Cuostm valdition", "villa already exist");
+                    ModelState.AddModelError("Cuostm valdition", "villa Number already exist");
                     _APIResponse.EroorMessage = new List<string>
                     {
                          ModelState.ToString()
@@ -113,7 +115,13 @@ namespace Property_WepAPI.Controllers
                     _APIResponse.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(_APIResponse);
                 }
-                if (villaDTO == null)
+                if(await _dbVilla.GetAsync(v => v.Id == villaNumberDTO.VillaId) == null)
+                {
+                    ModelState.AddModelError("Cuostm valdition", "villa Id is Invaild");
+                    _APIResponse.StatusCode = HttpStatusCode.BadRequest;
+                    return BadRequest(_APIResponse);
+                }
+                if (villaNumberDTO == null)
                 {
                     _APIResponse.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(_APIResponse);
@@ -122,14 +130,13 @@ namespace Property_WepAPI.Controllers
                 //{
                 //    return StatusCode(StatusCodes.Status500InternalServerError);
                 //}
-                Villa model = _mapping.Map<Villa>(villaDTO);
+                VillaNumber model = _mapping.Map<VillaNumber>(villaNumberDTO);
 
-                await _dbVilla.CreateAsync(model);
+                await _dbvillaNumber.CreateAsync(model);
                 _APIResponse.StatusCode = HttpStatusCode.Created;
-                _APIResponse.Result = _mapping.Map<VillaDTO>(model); ;
-                return CreatedAtRoute("GetVilla", new { id = model.Id }, _APIResponse);
-            }
-            catch (Exception e)
+                _APIResponse.Result = _mapping.Map<VillaNumberDTO>(model); ;
+                return CreatedAtRoute("GetVillaNumber", new { id = model.VillaNo }, _APIResponse);
+            }catch(Exception e)
             {
                 _APIResponse.IsSuccess = false;
                 _APIResponse.EroorMessage = new List<string>
@@ -138,15 +145,15 @@ namespace Property_WepAPI.Controllers
                 };
             }
             return _APIResponse;
-
+           
 
 
         }
-        [HttpDelete("{id:int}", Name = "DeleteVilla")]
+        [HttpDelete("{id:int}", Name = "DeleteVillaNumber")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<APIResponse>> DeleteVilla(int id)
+        public async Task<ActionResult<APIResponse>> DeleteVillaNumber(int id)
         {
             try
             {
@@ -155,18 +162,17 @@ namespace Property_WepAPI.Controllers
                     _APIResponse.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(_APIResponse);
                 }
-                var villa = await _dbVilla.GetAsync(v => v.Id == id, Tracked: false);
-                if (villa == null)
+                var villaNumber = await _dbvillaNumber.GetAsync(v => v.VillaNo== id, Tracked: false);
+                if (villaNumber == null)
                 {
                     _APIResponse.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_APIResponse);
                 }
-                 await  _dbVilla.RemoveAsync(villa);
+                 await _dbvillaNumber.RemoveAsync(villaNumber);
                 _APIResponse.StatusCode = HttpStatusCode.NoContent;
 
                 return Ok(_APIResponse);
-            }
-            catch (Exception e)
+            }catch(Exception e)
             {
                 _APIResponse.IsSuccess = false;
                 _APIResponse.EroorMessage = new List<string>
@@ -175,38 +181,43 @@ namespace Property_WepAPI.Controllers
                 };
             }
             return _APIResponse;
+           
 
-
-
+            
         }
 
 
-        [HttpPut("{id:int}", Name = "UpdateVilla")]
+        [HttpPut("{id:int}", Name = "UpdateVillaNumber")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<APIResponse>> UpdateVilla(int id, [FromBody] VillaUpdateDTO villaDTO)
+        public async Task<ActionResult<APIResponse>> UpdateVillaNumber(int id, [FromBody]VillaNumberUpdateDTO villaNumberDTO)
         {
             try
             {
-                if (id != villaDTO.Id || villaDTO == null)
+                if (id != villaNumberDTO.VillaNo|| villaNumberDTO == null)
                 {
                     _APIResponse.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(_APIResponse);
                 }
-                var villa = await _dbVilla.GetAsync(v => v.Id == id, Tracked: false);
-                if (villa == null)
+                if (await _dbVilla.GetAsync(v => v.Id == villaNumberDTO.VillaId) == null)
+                {
+                    ModelState.AddModelError("Cuostm valdition", "villa Id is Invaild");
+                    _APIResponse.StatusCode = HttpStatusCode.BadRequest;
+                    return BadRequest(_APIResponse);
+                }
+                var villaNumber = await _dbvillaNumber.GetAsync(v => v.VillaNo == id, Tracked: false);
+                if (villaNumber == null)
                 {
                     _APIResponse.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_APIResponse);
                 }
-                Villa model = _mapping.Map<Villa>(villaDTO);
+                VillaNumber model = _mapping.Map<VillaNumber>(villaNumberDTO);
 
-                await _dbVilla.UpdateAsync(model);
+               await  _dbvillaNumber.UpdateAsync(model);
                 _APIResponse.StatusCode = HttpStatusCode.NoContent;
 
                 return Ok(_APIResponse);
-            }
-            catch (Exception e)
+            }catch(Exception e)
             {
                 _APIResponse.IsSuccess = false;
                 _APIResponse.EroorMessage = new List<string>
@@ -215,35 +226,41 @@ namespace Property_WepAPI.Controllers
                 };
             }
             return _APIResponse;
-
-
+       
+            
 
 
         }
 
-        [HttpPatch("{id:int}", Name = "UpdatePartiolVilla")]
+        [HttpPatch("{id:int}", Name = "UpdatePartiolVillaNumber")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<APIResponse>> UpdatePartiolVilla(int id, JsonPatchDocument<VillaUpdateDTO> partiolDTO)
+        public async Task<ActionResult<APIResponse>> UpdatePartiolVillaNumber(int id, JsonPatchDocument<VillaNumberUpdateDTO> partiolDTO)
         {
             try
             {
                 if (id == 0 || partiolDTO == null)
                 {
-
+                   
                     _APIResponse.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(_APIResponse);
                 }
-                Villa villa = await _dbVilla.GetAsync(v => v.Id == id, Tracked: false);
-                if (villa == null)
+                VillaNumber villaNumber = await _dbvillaNumber.GetAsync(v => v.VillaNo== id, Tracked: false);
+                if (villaNumber == null)
                 {
-
+                 
                     _APIResponse.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(_APIResponse);
                 }
-                VillaUpdateDTO villaDTO = _mapping.Map<VillaUpdateDTO>(villa);
+                VillaNumberUpdateDTO villaNumberDTO = _mapping.Map<VillaNumberUpdateDTO>(villaNumber);
 
-                partiolDTO.ApplyTo(villaDTO, ModelState);
+                partiolDTO.ApplyTo(villaNumberDTO, ModelState);
+                if (await _dbVilla.GetAsync(v => v.Id == villaNumberDTO.VillaId) == null)
+                {
+                    ModelState.AddModelError("Cuostm valdition", "villa Id is Invaild");
+                    _APIResponse.StatusCode = HttpStatusCode.BadRequest;
+                    return BadRequest(_APIResponse);
+                }
                 if (!ModelState.IsValid)
                 {
                     _APIResponse.EroorMessage = new List<string>
@@ -253,15 +270,14 @@ namespace Property_WepAPI.Controllers
                     _APIResponse.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(_APIResponse);
                 }
-                Villa modle = _mapping.Map<Villa>(villaDTO);
+                VillaNumber modle = _mapping.Map<VillaNumber>(villaNumberDTO);
 
-               await _dbVilla.UpdateAsync(modle);
+                 await  _dbvillaNumber.UpdateAsync(modle);
 
                 _APIResponse.StatusCode = HttpStatusCode.NoContent;
 
                 return Ok(_APIResponse);
-            }
-            catch (Exception e)
+            }catch(Exception e)
             {
                 _APIResponse.IsSuccess = false;
                 _APIResponse.EroorMessage = new List<string>
