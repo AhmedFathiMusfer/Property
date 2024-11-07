@@ -4,6 +4,7 @@ using Property_WepAPI.Models;
 using Property_WepAPI.Repository.IRpository;
 using System.Linq;
 using System.Linq.Expressions;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Property_WepAPI.Repository
 {
@@ -24,9 +25,16 @@ namespace Property_WepAPI.Repository
             await SaveAsync();
         }
 
-        public async Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null)
+        public async Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, string? includeProperties = null)
         {
             IQueryable<T> Query = Entity;
+            if (includeProperties != null)
+            {
+                foreach (var includeproperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                  Query=  Query.Include(includeproperty);
+                }
+            }
             if (filter != null)
             {
                 Query = Query.Where(filter);
@@ -35,9 +43,16 @@ namespace Property_WepAPI.Repository
             return await Query.ToListAsync();
         }
 
-        public async Task<T> GetAsync(Expression<Func<T, bool>>? filter = null, bool Tracked = true)
+        public async Task<T> GetAsync(Expression<Func<T, bool>>? filter = null, bool Tracked = true, string? includeProperties = null)
         {
             IQueryable<T> Query = Entity;
+            if (includeProperties != null)
+            {
+                foreach (var includeproperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                   Query= Query.Include(includeproperty);
+                }
+            }
             if (Tracked != true)
             {
                 Query = Query.AsNoTracking();

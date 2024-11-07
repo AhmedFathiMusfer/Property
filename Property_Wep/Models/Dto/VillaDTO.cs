@@ -9,7 +9,7 @@ namespace Property_Wep.Models.Dto
         [MaxLength(20)]
         public string Name { get; set; }
         public string? Details { get; set; }
-        [Required]
+       [Required]
         public int Rate { get; set; }
         public int Occupancy { get; set; }
         public int Sqft { get; set; }

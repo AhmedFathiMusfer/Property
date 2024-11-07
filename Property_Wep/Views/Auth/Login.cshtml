@@ -1,0 +1,29 @@
+﻿@model LoginRequestDTO
+
+<form  asp-action="Login"  method="post">
+
+    <div class="container border p-4">
+        <div class="row text-center">
+            <h1 class="text-primary">Login </h1>
+        </div>
+        <div class="row text-center">
+            <div class="text-danger" asp-validation-summary="All"></div>
+        </div>
+        <div class="row ">
+            <div class="col-6 offset-3 pt-2 ">
+                <input class="form-control " type="text" asp-for="UserName" placeholder="UserName" />
+            </div>
+            <div class="col-6 offset-3 pt-2 ">
+                <input class="form-control " typy="txet" asp-for="Password" placeholder="Password" />
+            </div>
+            <div class="col-6 offset-3 pt-2 ">
+               <input type="submit" value="Login" class="form-control btn btn-success"/>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial">
+}

@@ -1,32 +1,37 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Property_Utility;
 using Property_Wep.Models;
-using System.Diagnostics;
+using Property_Wep.Models.Dto;
+using Property_Wep.Services.IServices;
 
 namespace Property_Wep.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IMapper mapper;
+        private readonly IVillaService villaService;
+        private string Session;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IMapper mapper, IVillaService villaService)
         {
-            _logger = logger;
+            this.mapper = mapper;
+            this.villaService = villaService;
+           // Session = HttpContext.Session.GetString(SD.SessionToken);
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
-        }
+            List<VillaDTO> villaDTO = new();
+            var Response = await villaService.GetAllAsync<APIResponse>(HttpContext.Session.GetString(SD.SessionToken));
+            if (Response != null && Response.IsSuccess)
+            {
+                villaDTO = JsonConvert.DeserializeObject<List<VillaDTO>>(Convert.ToString(Response.Result));
+            }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(villaDTO);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Property_Utility
+﻿using System.Xml;
+
+namespace Property_Utility
 {
     public static class SD
     {
@@ -11,5 +13,6 @@
             PATCH
 
         }
+        public static string SessionToken = "SessionTolen"; 
     }
 }

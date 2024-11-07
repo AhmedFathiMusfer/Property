@@ -10,6 +10,8 @@ namespace Property_Wep.Models.Dto
         public int VillaId { get; set; }
         public string? SpecialDetails { get; set; }
 
+        public VillaDTO villa { get; set; }
+
 
 
     }

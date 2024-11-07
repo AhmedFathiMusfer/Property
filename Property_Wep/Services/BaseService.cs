@@ -3,6 +3,7 @@ using Property_Utility;
 using Property_Wep.Models;
 using Property_Wep.Services.IServices;
 using System;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -41,7 +42,7 @@ namespace Property_Wep.Services
                         message.Method = HttpMethod.Put;
                         break;
                     case SD.ApiType.DELETE:
-                        message.Method = HttpMethod.Post;
+                        message.Method = HttpMethod.Delete;
                         break;
                     default:
                         message.Method = HttpMethod.Get;
@@ -49,16 +50,41 @@ namespace Property_Wep.Services
                 }
 
                 HttpResponseMessage apiResponse = null;
+                if (!string.IsNullOrEmpty(apiRequest.Token))
+                {
+                    Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiRequest.Token);
+                }
                 apiResponse = await Client.SendAsync(message);
                 var apiContent = await apiResponse.Content.ReadAsStringAsync();
-                var APIResponse = JsonConvert.DeserializeObject<T>(apiContent);
-                return APIResponse;
+                try
+                {
+                    APIResponse APIResponse= JsonConvert.DeserializeObject<APIResponse>(apiContent);
+                    if (apiResponse.StatusCode == System.Net.HttpStatusCode.NotFound || apiResponse.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                    {
+                        APIResponse.StatusCode = System.Net.HttpStatusCode.BadRequest;
+                        APIResponse.IsSuccess = false;
+                        var res = JsonConvert.SerializeObject(APIResponse);
+                       var ReturnObj= JsonConvert.DeserializeObject<T>(res);
+                        return ReturnObj;
+
+
+                    }
+                }
+                catch(Exception e)
+                {
+
+                    var ExceptionResponse = JsonConvert.DeserializeObject<T>(apiContent);
+                    return ExceptionResponse;
+                }
+                
+                var APIResponseObj = JsonConvert.DeserializeObject<T>(apiContent);
+                return APIResponseObj;
 
             }catch(Exception e)
             {
                 var dto = new APIResponse
                 {
-                    EroorMessage = new List<string>
+                    ErrorMessages = new List<string>
                     {
                         Convert.ToString(e.Message)
                     },

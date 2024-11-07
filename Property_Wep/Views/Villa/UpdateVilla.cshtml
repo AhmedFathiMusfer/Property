@@ -2,11 +2,11 @@
 
 <form asp-action="UpdateVilla" method="post">
     <div class="container border p-3">
-        <h1 class="text-primary"> Create Villa</h1>
+        <h1 class="text-primary"> Update Villa</h1>
         <hr />
 
         <div class="row">
-            <div asp-validation-summary="All"></div>
+            <div class="text-danger" asp-validation-summary="All"></div>
             <input type="hidden" asp-for="Id" />
             <div class="col-2">
                 <label class="control-label pt-2 " asp-for="Name" style="font-size:20;"></label>

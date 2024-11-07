@@ -1,57 +1,59 @@
 ﻿@model IEnumerable<VillaDTO> 
 <br />
-<div class="container p-4 border">
+<div class="container p-4 mt-xl-5 border">
+   
+    <div class="row  pb-2">
+        <div class="col ">
+            <h1 class="text-primary ">List Villa</h1>
+        </div>
+        <div class="col text-end  pt-1">
 
-</div>
+            <a asp-controller="Villa" asp-action="CreateVilla" class="btn btn-outline-primary "> Create villa <i class="bi bi-plus-lg"></i> </a>
+        </div>
 
-<div class="row  pb-2">
-    <div class="col ">
-        <h1 class="text-primary ">List Villa</h1>
     </div>
-    <div class="col text-end  pt-1">
-        
-        <a asp-controller="Villa" asp-action="CreateVilla" class="btn btn-outline-primary "> Create villa <i class="bi bi-plus-lg"></i> </a>
-    </div>
-
-</div>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Name
-            </th>
-            <th>
-                Occupancy
-            </th>
-            <th>
-                Rate
-            </th>
-            <th>
-
-            </th>
-        </tr>
-
-    </thead>
-   <tbody>
-        @foreach(var villa in Model)
-        {
+    <hr />
+    <table class="table">
+        <thead>
             <tr>
-                <td>
-                    @villa.Name
-                </td>
-                <td>
-                    @villa.Occupancy
-                </td>
-                <td>
-                    @((villa.Rate).ToString("c"))
-                </td>
-                <td>
-                    <a asp-controller="Villa" asp-action="UpdateVilla" asp-route-villaId="@villa.Id" class="btn btn-primary mx-4 "> Edit <i class="bi bi-pencil-square"></i> </a>
-                    <a asp-controller="Villa" asp-action="DeleteVilla" asp-route-villaId="@villa.Id" class="btn btn-danger "> Delete<i class="bi bi-trash-fill"></i> </a>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Occupancy
+                </th>
+                <th>
+                    Rate
+                </th>
+                <th>
 
-                </td>
+                </th>
             </tr>
-        }
-    </tbody>
 
-</table>
+        </thead>
+        <tbody>
+            @foreach (var villa in Model)
+            {
+                <tr>
+                    <td>
+                        @villa.Name
+                    </td>
+                    <td>
+                        @villa.Occupancy
+                    </td>
+                    <td>
+                        @((villa.Rate).ToString("c"))
+                    </td>
+                    <td>
+                        <a asp-controller="Villa" asp-action="UpdateVilla" asp-route-villaId="@villa.Id" class="btn btn-success mx-4 "> Edit <i class="bi bi-pencil-square"></i> </a>
+                        <a asp-controller="Villa" asp-action="DeleteVilla" asp-route-villaId="@villa.Id" class="btn btn-danger "> Delete<i class="bi bi-trash-fill"></i> </a>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+
+</div>
+
