@@ -8,7 +8,7 @@ namespace Property_WepAPI.Repository.IRpository
     {
          bool IsUniqueUser(string username);
           Task<LoginResponseDTO> Login(LoginRequestDTO loginRequestDTO);
-        Task<LocalUser> Register(RegisterationRequestDTO regitsterationRequestDTO);
+        Task<UserDTO> Register(RegisterationRequestDTO regitsterationRequestDTO);
 
     }
 }

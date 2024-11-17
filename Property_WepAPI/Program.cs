@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -25,12 +26,19 @@ var builder = WebApplication.CreateBuilder(args);
 //builder.Host.UseSerilog();
 builder.Services.AddControllers(option =>
 {
+    option.CacheProfiles.Add("Default30", new CacheProfile()
+    {
+        Duration = 30,
+        
+    }) ;
     option.ReturnHttpNotAcceptable = false;
 }).AddNewtonsoftJson().AddXmlDataContractSerializerFormatters();
 builder.Services.AddDbContext<ApplicationDbContext>(option =>
 {
     option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultSQLConnection"));
 });
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddResponseCaching();
 var key = builder.Configuration.GetValue<string>("ApiSettings:Secert");
 builder.Services.AddApiVersioning(option =>
 {

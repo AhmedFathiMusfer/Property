@@ -25,7 +25,7 @@ namespace Property_WepAPI.Repository
             await SaveAsync();
         }
 
-        public async Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, string? includeProperties = null)
+        public async Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, string? includeProperties = null, int pageSize = 0, int pageNumber = 1)
         {
             IQueryable<T> Query = Entity;
             if (includeProperties != null)
@@ -39,7 +39,15 @@ namespace Property_WepAPI.Repository
             {
                 Query = Query.Where(filter);
             }
-
+            if (pageSize > 0)
+            {
+                if (pageSize > 100)
+                {
+                    pageSize = 100;
+                 
+                }
+                Query = Query.Skip(pageSize * (pageNumber - 1)).Take(pageSize);
+            }
             return await Query.ToListAsync();
         }
 

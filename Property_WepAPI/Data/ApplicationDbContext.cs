@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Property_WepAPI.Models;
 
 namespace Property_WepAPI.Data
 {
-    public class ApplicationDbContext :DbContext
+    public class ApplicationDbContext :IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext (DbContextOptions<ApplicationDbContext> options):base(options)
         {
@@ -11,7 +13,8 @@ namespace Property_WepAPI.Data
         }
         public DbSet<Villa> villas { get; set; }
         public DbSet<VillaNumber> villaNumbers { get; set; }
-        public DbSet<LocalUser> Users { get; set; }
+       // public DbSet<LocalUser> Users { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -7,6 +7,7 @@ using Property_Utility;
 using Property_Wep.Models;
 using Property_Wep.Models.Dto;
 using Property_Wep.Services.IServices;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace Property_Wep.Controllers
@@ -58,9 +59,12 @@ namespace Property_Wep.Controllers
                 LoginResponseDTO model = JsonConvert.DeserializeObject<LoginResponseDTO>(Convert.ToString(response.Result));
 
                 var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var token = tokenHandler.ReadJwtToken(model.Token);
 
-                identity.AddClaim(new Claim(ClaimTypes.Name, model.User.Name));
-                identity.AddClaim(new Claim(ClaimTypes.Role, model.User.Role));
+
+                identity.AddClaim(new Claim(ClaimTypes.Name, token.Claims.FirstOrDefault(u => u.Type == "unique_name").Value));
+                identity.AddClaim(new Claim(ClaimTypes.Role, token.Claims.FirstOrDefault(u=>u.Type=="role").Value));
                 var principal = new ClaimsPrincipal(identity);
               await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
                 

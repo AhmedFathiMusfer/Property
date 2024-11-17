@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Property_WepAPI.Data;
 
@@ -11,9 +12,11 @@ using Property_WepAPI.Data;
 namespace Property_WepAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241107185022_addIdentityAuthantication")]
+    partial class addIdentityAuthantication
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -298,7 +301,7 @@ namespace Property_WepAPI.Migrations
                         {
                             Id = 1,
                             Amenity = "",
-                            CreatedDate = new DateTime(2024, 11, 7, 21, 52, 58, 165, DateTimeKind.Local).AddTicks(4301),
+                            CreatedDate = new DateTime(2024, 11, 7, 21, 50, 22, 685, DateTimeKind.Local).AddTicks(3691),
                             Details = "Fusce 11 tincidunt maximus leo, sed scelerisque massa auctor sit amet. Donec ex mauris, hendrerit quis nibh ac, efficitur fringilla enim.",
                             ImageUrl = "https://dotnetmasteryimages.blob.core.windows.net/bluevillaimages/villa3.jpg",
                             Name = "Royal Villa",
@@ -311,7 +314,7 @@ namespace Property_WepAPI.Migrations
                         {
                             Id = 2,
                             Amenity = "",
-                            CreatedDate = new DateTime(2024, 11, 7, 21, 52, 58, 165, DateTimeKind.Local).AddTicks(4315),
+                            CreatedDate = new DateTime(2024, 11, 7, 21, 50, 22, 685, DateTimeKind.Local).AddTicks(3712),
                             Details = "Fusce 11 tincidunt maximus leo, sed scelerisque massa auctor sit amet. Donec ex mauris, hendrerit quis nibh ac, efficitur fringilla enim.",
                             ImageUrl = "https://dotnetmasteryimages.blob.core.windows.net/bluevillaimages/villa1.jpg",
                             Name = "Premium Pool Villa",
@@ -324,7 +327,7 @@ namespace Property_WepAPI.Migrations
                         {
                             Id = 3,
                             Amenity = "",
-                            CreatedDate = new DateTime(2024, 11, 7, 21, 52, 58, 165, DateTimeKind.Local).AddTicks(4317),
+                            CreatedDate = new DateTime(2024, 11, 7, 21, 50, 22, 685, DateTimeKind.Local).AddTicks(3714),
                             Details = "Fusce 11 tincidunt maximus leo, sed scelerisque massa auctor sit amet. Donec ex mauris, hendrerit quis nibh ac, efficitur fringilla enim.",
                             ImageUrl = "https://dotnetmasteryimages.blob.core.windows.net/bluevillaimages/villa4.jpg",
                             Name = "Luxury Pool Villa",
@@ -337,7 +340,7 @@ namespace Property_WepAPI.Migrations
                         {
                             Id = 4,
                             Amenity = "",
-                            CreatedDate = new DateTime(2024, 11, 7, 21, 52, 58, 165, DateTimeKind.Local).AddTicks(4319),
+                            CreatedDate = new DateTime(2024, 11, 7, 21, 50, 22, 685, DateTimeKind.Local).AddTicks(3815),
                             Details = "Fusce 11 tincidunt maximus leo, sed scelerisque massa auctor sit amet. Donec ex mauris, hendrerit quis nibh ac, efficitur fringilla enim.",
                             ImageUrl = "https://dotnetmasteryimages.blob.core.windows.net/bluevillaimages/villa5.jpg",
                             Name = "Diamond Villa",
@@ -350,7 +353,7 @@ namespace Property_WepAPI.Migrations
                         {
                             Id = 5,
                             Amenity = "",
-                            CreatedDate = new DateTime(2024, 11, 7, 21, 52, 58, 165, DateTimeKind.Local).AddTicks(4321),
+                            CreatedDate = new DateTime(2024, 11, 7, 21, 50, 22, 685, DateTimeKind.Local).AddTicks(3818),
                             Details = "Fusce 11 tincidunt maximus leo, sed scelerisque massa auctor sit amet. Donec ex mauris, hendrerit quis nibh ac, efficitur fringilla enim.",
                             ImageUrl = "https://dotnetmasteryimages.blob.core.windows.net/bluevillaimages/villa2.jpg",
                             Name = "Diamond Pool Villa",
@@ -388,7 +391,7 @@ namespace Property_WepAPI.Migrations
                         new
                         {
                             VillaNo = 4,
-                            CreatedDate = new DateTime(2024, 11, 7, 21, 52, 58, 165, DateTimeKind.Local).AddTicks(4503),
+                            CreatedDate = new DateTime(2024, 11, 7, 21, 50, 22, 685, DateTimeKind.Local).AddTicks(4153),
                             SpecialDetails = "Bage",
                             UpdateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             VillaId = 1
@@ -396,7 +399,7 @@ namespace Property_WepAPI.Migrations
                         new
                         {
                             VillaNo = 5,
-                            CreatedDate = new DateTime(2024, 11, 7, 21, 52, 58, 165, DateTimeKind.Local).AddTicks(4507),
+                            CreatedDate = new DateTime(2024, 11, 7, 21, 50, 22, 685, DateTimeKind.Local).AddTicks(4157),
                             SpecialDetails = "Smali",
                             UpdateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             VillaId = 2
@@ -404,7 +407,7 @@ namespace Property_WepAPI.Migrations
                         new
                         {
                             VillaNo = 3,
-                            CreatedDate = new DateTime(2024, 11, 7, 21, 52, 58, 165, DateTimeKind.Local).AddTicks(4509),
+                            CreatedDate = new DateTime(2024, 11, 7, 21, 50, 22, 685, DateTimeKind.Local).AddTicks(4158),
                             SpecialDetails = "Bage",
                             UpdateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             VillaId = 1
