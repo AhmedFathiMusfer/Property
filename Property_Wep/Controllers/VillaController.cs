@@ -16,12 +16,13 @@ namespace Property_Wep.Controllers
     {
         private readonly IVillaService villaService;
         private readonly IMapper mapper;
-       // private string Session;
+        // private string Session;
 
         public VillaController(IVillaService villaService,IMapper mapper)
         {
             this.villaService = villaService;
             this.mapper = mapper;
+          
             
         }
         public async Task<IActionResult> IndexVilla()
@@ -29,7 +30,7 @@ namespace Property_Wep.Controllers
             List<VillaDTO> villaDTOs = new();
 
 
-            var Response= await villaService.GetAllAsync<APIResponse>(HttpContext.Session.GetString(SD.SessionToken));
+            var Response= await villaService.GetAllAsync<APIResponse>();
             if (Response!=null&&Response.IsSuccess)
             {
                 villaDTOs =JsonConvert.DeserializeObject<List<VillaDTO>>(Convert.ToString( Response.Result));
@@ -48,25 +49,35 @@ namespace Property_Wep.Controllers
         {
             if (ModelState.IsValid)
             {
-                var Response = await villaService.CreateAsync<APIResponse>(model, HttpContext.Session.GetString(SD.SessionToken));
+                var Response = await villaService.CreateAsync<APIResponse>(model );
                 if (Response!=null && Response.IsSuccess)
                 {
                     TempData["Success"] = "Villa Created Successfuly";
                     return Redirect(nameof(IndexVilla));
                 }
-             
+                else
+                {
+                    TempData["error"] = (Response.ErrorMessages != null && Response.ErrorMessages.Count > 0) ? Response.ErrorMessages[0] : "Error Encounetred";
+
+                }
+
             }
-            TempData["error"] = "Error encountered";
+           
             return View(model);
         }
 
         public async Task<IActionResult>UpdateVilla(int villaId)
         {
-            var Response = await villaService.GetAsync<APIResponse>(villaId, HttpContext.Session.GetString(SD.SessionToken));
+            var Response = await villaService.GetAsync<APIResponse>(villaId );
             if (Response != null && Response.IsSuccess)
             {
                 VillaDTO villaDTO = JsonConvert.DeserializeObject<VillaDTO>(Convert.ToString(Response.Result));
                 return View(mapper.Map<VillaUpdateDTO>(villaDTO));
+            }
+            else
+            {
+                TempData["error"] = (Response.ErrorMessages != null && Response.ErrorMessages.Count > 0) ? Response.ErrorMessages[0] : "Error Encounetred";
+
             }
             return NotFound();
         }
@@ -76,30 +87,40 @@ namespace Property_Wep.Controllers
         {
             if (ModelState.IsValid)
             {
-                var Response = await villaService.UpdateAsync<APIResponse>(model, HttpContext.Session.GetString(SD.SessionToken));
+                var Response = await villaService.UpdateAsync<APIResponse>(model );
                 if (Response != null && Response.IsSuccess)
                 {
                     TempData["Success"] = "Villa Updated Successfuly";
                     return Redirect(nameof(IndexVilla));
 
                 }
-                
+                else
+                {
+                    TempData["error"] = (Response.ErrorMessages != null && Response.ErrorMessages.Count > 0) ? Response.ErrorMessages[0] : "Error Encounetred";
+
+                }
+
             }
-            TempData["error"] = "Error encountered";
+          
             return View(model);
         }
 
         public async Task<IActionResult> DeleteVilla(int villaId)
         {
             VillaDTO villaDTO=new();
-            var Response = await villaService.GetAsync<APIResponse>(villaId, HttpContext.Session.GetString(SD.SessionToken));
+            var Response = await villaService.GetAsync<APIResponse>(villaId );
             if (Response.Result != null && Response.IsSuccess)
             {
                 villaDTO = JsonConvert.DeserializeObject<VillaDTO>(Convert.ToString(Response.Result));
                 
                 return View(villaDTO);
             }
-           
+            else
+            {
+                TempData["error"] = (Response.ErrorMessages != null && Response.ErrorMessages.Count > 0) ? Response.ErrorMessages[0] : "Error Encounetred";
+
+            }
+
             return NotFound();
 
         }
@@ -110,14 +131,18 @@ namespace Property_Wep.Controllers
         public async Task<IActionResult> DeleteVilla(VillaDTO model)
         {
            
-            var Response = await villaService.RemoveAsync<APIResponse>(model.Id, HttpContext.Session.GetString(SD.SessionToken));
+            var Response = await villaService.RemoveAsync<APIResponse>(model.Id );
             if (Response!=null&& Response.IsSuccess)
             {
                 TempData["Success"] = "Villa Deleted Successfuly";
 
                 return Redirect(nameof(IndexVilla));
             }
-            TempData["error"] = "Error encountered";
+            else
+            {
+                TempData["error"] = (Response.ErrorMessages != null && Response.ErrorMessages.Count > 0) ? Response.ErrorMessages[0] : "Error Encounetred";
+
+            }
             return View(model);
 
         }

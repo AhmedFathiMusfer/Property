@@ -15,9 +15,12 @@ namespace Property_WepAPI.Data
         public DbSet<VillaNumber> villaNumbers { get; set; }
        // public DbSet<LocalUser> Users { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<RefreshToken> refreshTokens { get; set; }
+        public DbSet<ForgetPasswored> fogetPassworeds { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+           
             modelBuilder.Entity<Villa>().HasData(
                 new Villa
                 {
@@ -41,7 +44,7 @@ namespace Property_WepAPI.Data
                   Rate = 300,
                   Sqft = 550,
                   Amenity = "",
-                  CreatedDate = DateTime.Now
+                  CreatedDate = new DateTime(2004,10,5)
               },
               new Villa
               {
@@ -53,7 +56,7 @@ namespace Property_WepAPI.Data
                   Rate = 400,
                   Sqft = 750,
                   Amenity = "",
-                  CreatedDate = DateTime.Now
+                  CreatedDate = new DateTime(2004, 10, 5)
               },
               new Villa
               {
@@ -65,7 +68,7 @@ namespace Property_WepAPI.Data
                   Rate = 550,
                   Sqft = 900,
                   Amenity = "",
-                  CreatedDate = DateTime.Now
+                  CreatedDate = new DateTime(2004, 10, 5)
               },
               new Villa
               {
@@ -77,7 +80,7 @@ namespace Property_WepAPI.Data
                   Rate = 600,
                   Sqft = 1100,
                   Amenity = "",
-                  CreatedDate = DateTime.Now
+                  CreatedDate = new DateTime(2004, 10, 5)
               });
 
             modelBuilder.Entity<VillaNumber>().HasData(
@@ -86,7 +89,8 @@ namespace Property_WepAPI.Data
 
                     VillaNo = 4,
                     SpecialDetails = "Bage",
-                    CreatedDate = DateTime.Now,
+                    CreatedDate = new DateTime(2004, 10, 5)
+,
                     VillaId = 1
 
                 },
@@ -95,7 +99,7 @@ namespace Property_WepAPI.Data
 
                     VillaNo = 5,
                     SpecialDetails = "Smali",
-                    CreatedDate = DateTime.Now,
+                    CreatedDate = new DateTime(2004, 10, 5),
                     VillaId = 2
 
                 },
@@ -104,7 +108,7 @@ namespace Property_WepAPI.Data
 
                     VillaNo = 3,
                     SpecialDetails = "Bage",
-                    CreatedDate = DateTime.Now,
+                    CreatedDate = new DateTime(2004, 10, 5),
                     VillaId=1
 
                 }

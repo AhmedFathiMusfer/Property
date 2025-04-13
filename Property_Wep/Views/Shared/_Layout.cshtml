@@ -1,4 +1,5 @@
 ﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpAcc
+@inject Property_Wep.Services.IServices.ITokenProvider Token
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,14 +26,37 @@
                         <li class="nav-item">
                             <a class="nav-link  text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        @if (HttpAcc.HttpContext.Session.GetString(SD.SessionToken)!=null&&
-                        HttpAcc.HttpContext.Session.GetString(SD.SessionToken).Length>0)
+                        @if( Token.GetToken()!=null)
+                        {
+                            @if (User.IsInRole("admin"))
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Data Managment
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <li>
+                                            <a class="dropdown-item " asp-area="" asp-controller="Villa" asp-action="IndexVilla">Villa</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item " asp-area="" asp-controller="VillaNumber" asp-action="IndexVillaNumber">Villa Number</a>
+                                        </li>
+
+                                    </ul>
+                                </li>
+                            }
+
+                        }
+                        
+                     
+                    
+                        
+                    </ul>
+                    <ul class="navbar-nav">
+                        @if (Token.GetToken() != null)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="" asp-controller="Villa" asp-action="IndexVilla">Villa</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="" asp-controller="VillaNumber" asp-action="IndexVillaNumber">Villa Number</a>
+                                <a class="nav-link text-light" href="#">Hello ,@User.Identity.Name</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-light" asp-area="" asp-controller="Auth" asp-action="Logout">Logout</a>
@@ -40,7 +64,7 @@
                         }
                         else
                         {
-                           
+
                             <li class="nav-item">
                                 <a class="nav-link text-light" asp-area="" asp-controller="Auth" asp-action="Register">Register</a>
                             </li>
@@ -48,8 +72,6 @@
                                 <a class="nav-link text-light" asp-area="" asp-controller="Auth" asp-action="Login">Login</a>
                             </li>
                         }
-                    
-                        
                     </ul>
                 </div>
             </div>

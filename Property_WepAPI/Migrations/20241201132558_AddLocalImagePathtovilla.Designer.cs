@@ -12,8 +12,8 @@ using Property_WepAPI.Data;
 namespace Property_WepAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241107185022_addIdentityAuthantication")]
-    partial class addIdentityAuthantication
+    [Migration("20241201132558_AddLocalImagePathtovilla")]
+    partial class AddLocalImagePathtovilla
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -227,35 +227,6 @@ namespace Property_WepAPI.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Property_WepAPI.Models.LocalUser", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Users");
-                });
-
             modelBuilder.Entity("Property_WepAPI.Models.Villa", b =>
                 {
                     b.Property<int>("Id")
@@ -274,6 +245,9 @@ namespace Property_WepAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LocalImagePath")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -301,7 +275,7 @@ namespace Property_WepAPI.Migrations
                         {
                             Id = 1,
                             Amenity = "",
-                            CreatedDate = new DateTime(2024, 11, 7, 21, 50, 22, 685, DateTimeKind.Local).AddTicks(3691),
+                            CreatedDate = new DateTime(2024, 12, 1, 16, 25, 58, 533, DateTimeKind.Local).AddTicks(6086),
                             Details = "Fusce 11 tincidunt maximus leo, sed scelerisque massa auctor sit amet. Donec ex mauris, hendrerit quis nibh ac, efficitur fringilla enim.",
                             ImageUrl = "https://dotnetmasteryimages.blob.core.windows.net/bluevillaimages/villa3.jpg",
                             Name = "Royal Villa",
@@ -314,7 +288,7 @@ namespace Property_WepAPI.Migrations
                         {
                             Id = 2,
                             Amenity = "",
-                            CreatedDate = new DateTime(2024, 11, 7, 21, 50, 22, 685, DateTimeKind.Local).AddTicks(3712),
+                            CreatedDate = new DateTime(2004, 10, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Details = "Fusce 11 tincidunt maximus leo, sed scelerisque massa auctor sit amet. Donec ex mauris, hendrerit quis nibh ac, efficitur fringilla enim.",
                             ImageUrl = "https://dotnetmasteryimages.blob.core.windows.net/bluevillaimages/villa1.jpg",
                             Name = "Premium Pool Villa",
@@ -327,7 +301,7 @@ namespace Property_WepAPI.Migrations
                         {
                             Id = 3,
                             Amenity = "",
-                            CreatedDate = new DateTime(2024, 11, 7, 21, 50, 22, 685, DateTimeKind.Local).AddTicks(3714),
+                            CreatedDate = new DateTime(2004, 10, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Details = "Fusce 11 tincidunt maximus leo, sed scelerisque massa auctor sit amet. Donec ex mauris, hendrerit quis nibh ac, efficitur fringilla enim.",
                             ImageUrl = "https://dotnetmasteryimages.blob.core.windows.net/bluevillaimages/villa4.jpg",
                             Name = "Luxury Pool Villa",
@@ -340,7 +314,7 @@ namespace Property_WepAPI.Migrations
                         {
                             Id = 4,
                             Amenity = "",
-                            CreatedDate = new DateTime(2024, 11, 7, 21, 50, 22, 685, DateTimeKind.Local).AddTicks(3815),
+                            CreatedDate = new DateTime(2004, 10, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Details = "Fusce 11 tincidunt maximus leo, sed scelerisque massa auctor sit amet. Donec ex mauris, hendrerit quis nibh ac, efficitur fringilla enim.",
                             ImageUrl = "https://dotnetmasteryimages.blob.core.windows.net/bluevillaimages/villa5.jpg",
                             Name = "Diamond Villa",
@@ -353,7 +327,7 @@ namespace Property_WepAPI.Migrations
                         {
                             Id = 5,
                             Amenity = "",
-                            CreatedDate = new DateTime(2024, 11, 7, 21, 50, 22, 685, DateTimeKind.Local).AddTicks(3818),
+                            CreatedDate = new DateTime(2004, 10, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Details = "Fusce 11 tincidunt maximus leo, sed scelerisque massa auctor sit amet. Donec ex mauris, hendrerit quis nibh ac, efficitur fringilla enim.",
                             ImageUrl = "https://dotnetmasteryimages.blob.core.windows.net/bluevillaimages/villa2.jpg",
                             Name = "Diamond Pool Villa",
@@ -391,7 +365,7 @@ namespace Property_WepAPI.Migrations
                         new
                         {
                             VillaNo = 4,
-                            CreatedDate = new DateTime(2024, 11, 7, 21, 50, 22, 685, DateTimeKind.Local).AddTicks(4153),
+                            CreatedDate = new DateTime(2004, 10, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             SpecialDetails = "Bage",
                             UpdateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             VillaId = 1
@@ -399,7 +373,7 @@ namespace Property_WepAPI.Migrations
                         new
                         {
                             VillaNo = 5,
-                            CreatedDate = new DateTime(2024, 11, 7, 21, 50, 22, 685, DateTimeKind.Local).AddTicks(4157),
+                            CreatedDate = new DateTime(2004, 10, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             SpecialDetails = "Smali",
                             UpdateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             VillaId = 2
@@ -407,7 +381,7 @@ namespace Property_WepAPI.Migrations
                         new
                         {
                             VillaNo = 3,
-                            CreatedDate = new DateTime(2024, 11, 7, 21, 50, 22, 685, DateTimeKind.Local).AddTicks(4158),
+                            CreatedDate = new DateTime(2004, 10, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             SpecialDetails = "Bage",
                             UpdateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             VillaId = 1

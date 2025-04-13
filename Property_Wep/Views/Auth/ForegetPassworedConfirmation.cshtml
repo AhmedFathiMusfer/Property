@@ -1,0 +1,38 @@
+﻿@model Property_WepAPI.Models.Dto.ForgetPassworedConfirmationDTO
+
+@{
+    ViewData["Title"] = "ForegetPassworedConfirmation";
+}
+<form asp-action="ForegetPassworedConfirmation">
+    <div class="container border p-4">
+        <div class="row text-center">
+            <h1 class="text-primary"> Foreget Passwored Confirmation</h1>
+        </div>
+        <div class="row text-center">
+            <div class="text-danger" asp-validation-summary="All"></div>
+        </div>
+        <div class="row ">
+            <div class="col-6 offset-3 pt-2">
+                <input type="hidden" asp-for="Email" class="form-control" />
+                <div>
+                    It has send the code to this email   <a class="text-primary">@Model.Email</a>
+                </div>
+            </div>
+            <div class="col-6 offset-3 pt-2 ">
+                <label asp-for="Code" class="control-label"></label>
+                <input asp-for="Code" class="form-control" />
+                <span asp-validation-for="Code" class="text-danger"></span>
+            </div>
+            <div class="col-6 offset-3 pt-2 ">
+                <input type="submit" value="Sure" class="form-control btn btn-success" />
+            </div>
+            <div class="col-6 offset-3 pt-2 ">
+                <a asp-action="forgetPasswored">Back</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -7,70 +7,67 @@ using Property_Wep.Services.IServices;
 
 namespace Property_Wep.Services
 {
-    public class VillaNumberService : BaseService, IVillaNumberService
+    public class VillaNumberService :  IVillaNumberService
     {
         private readonly IHttpClientFactory _httpClient;
         private readonly string villaNumberUrl;
-        public VillaNumberService(IHttpClientFactory httpClient,IConfiguration configuration) : base(httpClient)
+        private readonly IBaseService _baseService;
+        public VillaNumberService(IHttpClientFactory httpClient,IConfiguration configuration, IBaseService baseService) 
         {
             _httpClient = httpClient;
             villaNumberUrl = configuration.GetValue<string>("ServiecUrls:VillaAPI");
-
+            _baseService = baseService;
         }
 
-        public Task<T> CreateAsync<T>(VillaNumberCreateDTO dto, string token)
+        public async Task<T> CreateAsync<T>(VillaNumberCreateDTO dto)
         {
-            return SendAsync<T>(new APIRequest()
+            return await _baseService.SendAsync<T>(new APIRequest()
             {
               APIType=SD.ApiType.POST,
-              Url= villaNumberUrl + "/api/v1/VillaNumberAPI",
-              Data=dto,
-              Token=token
+              Url= villaNumberUrl + $"/api/{SD.CurrentVersion}/VillaNumberAPI",
+              Data=dto
+             
             });
         }
 
-        public Task<T> GetAllAsync<T>(string token)
+        public async Task<T> GetAllAsync<T>()
         {
-            return SendAsync<T>(new APIRequest()
+            return await _baseService.SendAsync<T>(new APIRequest()
             {
                 APIType = SD.ApiType.GET,
-                Url = villaNumberUrl + "/api/v1/VillaNumberAPI",
-                Token = token
+                Url = villaNumberUrl + $"/api/{SD.CurrentVersion}/VillaNumberAPI"
+              
 
             });
         }
 
-        public Task<T> GetAsync<T>(int id,string token)
-        {
-            return SendAsync<T>(new APIRequest()
+        public async Task<T> GetAsync<T>(int id)  {
+            return await _baseService.SendAsync<T>(new APIRequest()
             {
                 APIType = SD.ApiType.GET,
-                Url = villaNumberUrl + $"/api/v1/VillaNumberAPI/{id}",
-                Token = token
-
+                Url = villaNumberUrl + $"/api/{SD.CurrentVersion}/VillaNumberAPI/{id}"
+          
 
             });
         }
 
-        public Task<T> RemoveAsync<T>(int id,string token)
+        public async Task<T> RemoveAsync<T>(int id)
         {
-            return SendAsync<T>(new APIRequest()
+            return await _baseService.SendAsync<T>(new APIRequest()
             {
                 APIType = SD.ApiType.DELETE,
-                Url = villaNumberUrl + $"/api/v1/VillaNumberAPI/{id}",
-                Token = token
+                Url = villaNumberUrl + $"/api/{SD.CurrentVersion}/VillaNumberAPI/{id}"
 
             });
         }
 
-        public Task<T> UpdateAsync<T>(VillaNumberUpdateDTO dto,string token)
+        public async Task<T> UpdateAsync<T>(VillaNumberUpdateDTO dto)
         {
-            return SendAsync<T>(new APIRequest()
+            return await _baseService.SendAsync<T>(new APIRequest()
             {
                 APIType = SD.ApiType.PUT,
-                Url = villaNumberUrl + $"/api/v1/VillaNumberAPI/{dto.VillaNo}",
-                Data=dto,
-                Token = token
+                Url = villaNumberUrl + $"/api/{SD.CurrentVersion}/VillaNumberAPI/{dto.VillaNo}",
+                Data=dto
 
             });
         }

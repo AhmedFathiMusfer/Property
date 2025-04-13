@@ -1,0 +1,31 @@
+﻿@model Property_WepAPI.Models.Dto.ResetPassworedDTO
+
+@{
+    ViewData["Title"] = "ResetPasswored";
+}
+<form asp-action="ResetPasswored">
+    <div class="container border p-4">
+        <div class="row text-center">
+            <h1 class="text-primary"> Reste Passwored</h1>
+        </div>
+        <div class="row text-center">
+            <div class="text-danger" asp-validation-summary="All"></div>
+        </div>
+        <div class="row ">
+            <input type="hidden" asp-for="Email" class="form-control" />
+            <input type="hidden" asp-for="Code" class="form-control" />
+            <div class="col-6 offset-3 pt-2 ">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="col-6 offset-3 pt-2 ">
+                <input type="submit" value="Send" class="form-control btn btn-success" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

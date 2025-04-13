@@ -24,7 +24,7 @@ namespace Property_Wep.Controllers
         public async Task<IActionResult> Index()
         {
             List<VillaDTO> villaDTO = new();
-            var Response = await villaService.GetAllAsync<APIResponse>(HttpContext.Session.GetString(SD.SessionToken));
+            var Response = await villaService.GetAllAsync<APIResponse>();
             if (Response != null && Response.IsSuccess)
             {
                 villaDTO = JsonConvert.DeserializeObject<List<VillaDTO>>(Convert.ToString(Response.Result));

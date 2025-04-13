@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Property_Wep.Extensions;
 using Property_Wep.MapppingConfig;
 using Property_Wep.Services;
 using Property_Wep.Services.IServices;
@@ -8,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(u=>u.Filters.Add(new AuhExceptionRedirection()));
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddAutoMapper(typeof(Mapping));
 builder.Services.AddSession(option => {
@@ -25,7 +26,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
        option.LoginPath = "/Auth/Login";
        option.AccessDeniedPath = "/Auth/AccessDenied";
    });
-
+builder.Services.AddScoped<IBaseService, BaseService>();
 builder.Services.AddHttpClient<IVillaService, VillaService>();
 builder.Services.AddScoped<IVillaService, VillaService>();
 
@@ -34,6 +35,10 @@ builder.Services.AddScoped<IVillaNumberService, VillaNumberService>();
 
 builder.Services.AddHttpClient<IAuthService, AuthService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+
+builder.Services.AddSingleton<IApiRequsetMessageBuilder , ApiRequsetMessageBuilder>();
+
+builder.Services.AddScoped<ITokenProvider, TokenProvider>();    
 
 
 var app = builder.Build();

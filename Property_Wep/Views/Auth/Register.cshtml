@@ -20,7 +20,9 @@
                 <input class="form-control " typy="txet" asp-for="Password" placeholder="Password" />
             </div>
             <div class="col-6 offset-3 pt-2 ">
-                <input class="form-control " typy="txet" asp-for="Role" placeholder="Role" />
+                <select asp-for="Role" class="form-form-select " asp-items="@ViewBag.RoleList">
+                    <option>---Select Role</option>
+                </select>
             </div>
            
             <div class="col-6 offset-3 pt-2 ">

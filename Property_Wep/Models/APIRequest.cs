@@ -10,5 +10,7 @@ namespace Property_Wep.Models
         public object Data { get; set; }
         public string Token { get; set; }
 
+        public ContentType ContentType { get; set; } = ContentType.Jsone;
+
     }
 }

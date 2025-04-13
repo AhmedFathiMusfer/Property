@@ -12,3 +12,4 @@ namespace Property_WepAPI.Models
 
     }
 }
+                          
